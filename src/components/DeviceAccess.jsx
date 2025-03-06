@@ -2,13 +2,11 @@ import React, { useState, useRef } from 'react';
 import { Container, Row, Col, Button, Card, Form, Alert, Spinner } from 'react-bootstrap';
 
 const DeviceAccess = () => {
-  // Camera states
   const [imageCapture, setImageCapture] = useState(null);
   const [stream, setStream] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
   const [cameraError, setCameraError] = useState(null);
 
-  // Geolocation states
   const [location, setLocation] = useState(null);
   const [geoError, setGeoError] = useState(null);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
@@ -63,7 +61,6 @@ const DeviceAccess = () => {
       const url = URL.createObjectURL(blob);
       setCapturedImage(url);
       
-      // Draw on canvas for processing if needed
       if (canvasRef.current) {
         const img = new Image();
         img.onload = () => {

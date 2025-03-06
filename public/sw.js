@@ -12,11 +12,9 @@ const urlsToCache = [
   '/icons/icon-512x512.svg'
 ];
 
-// Add IndexedDB support to service worker
 const DB_NAME = 'hospitalDB';
 const DB_VERSION = 1;
 
-// Helper to open IndexedDB
 const openDB = () => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -42,7 +40,6 @@ const openDB = () => {
   });
 };
 
-// Install and cache essential resources
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME)
@@ -53,7 +50,6 @@ self.addEventListener('install', event => {
   );
 });
 
-// Activate and clean up old caches
 self.addEventListener('activate', event => {
   const cacheAllowlist = [STATIC_CACHE_NAME, DYNAMIC_CACHE_NAME, DATA_CACHE_NAME];
   

@@ -10,18 +10,15 @@ const ExternalApi = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showOfflineAlert, setShowOfflineAlert] = useState(false);
 
-  // Function to fetch data from API
   const fetchMedicalData = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // Check if online
       if (!navigator.onLine) {
         throw new Error('Sin conexión a Internet. Mostrando datos almacenados en caché.');
       }
       
-      // Using a free open API for medical information
       const response = await fetch('https://clinicaltables.nlm.nih.gov/api/conditions/v3/search?terms=diabetes&df=consumer_name,icd10cm');
       
       if (!response.ok) {
@@ -30,7 +27,6 @@ const ExternalApi = () => {
       
       const responseData = await response.json();
       
-      // Format the data from the API
       const formattedData = responseData[3].map((item, index) => ({
         id: index + 1,
         name: responseData[3][index][0],
@@ -41,16 +37,13 @@ const ExternalApi = () => {
       setData(formattedData);
       setFilteredData(formattedData);
       
-      // Store in IndexedDB for offline access
       try {
         const db = await openDatabase();
         const tx = db.transaction('medicalData', 'readwrite');
         const store = tx.objectStore('medicalData');
         
-        // Clear existing data
         await store.clear();
         
-        // Add new data
         formattedData.forEach(item => {
           store.add(item);
         });
@@ -61,7 +54,6 @@ const ExternalApi = () => {
       setError(error.message);
       console.error('Error fetching data:', error);
       
-      // Try to get data from IndexedDB if offline
       if (!navigator.onLine) {
         setShowOfflineAlert(true);
         try {
@@ -79,7 +71,6 @@ const ExternalApi = () => {
     }
   };
 
-  // Helper function to open IndexedDB
   const openDatabase = () => {
     return new Promise((resolve, reject) => {
       const request = indexedDB.open('medicalApi', 1);
@@ -98,7 +89,6 @@ const ExternalApi = () => {
     });
   };
 
-  // Get data from IndexedDB
   const getDataFromIndexedDB = async () => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -115,7 +105,6 @@ const ExternalApi = () => {
     });
   };
 
-  // Function to get category from ICD-10 code
   const getCategoryFromCode = (code) => {
     if (!code) return 'Otro';
     
@@ -174,7 +163,6 @@ const ExternalApi = () => {
   useEffect(() => {
     fetchMedicalData();
     
-    // Add online/offline event listeners
     window.addEventListener('online', handleOnlineStatusChange);
     window.addEventListener('offline', handleOnlineStatusChange);
     
@@ -186,7 +174,6 @@ const ExternalApi = () => {
 
   const handleOnlineStatusChange = () => {
     if (navigator.onLine) {
-      // If back online, fetch fresh data
       fetchMedicalData();
       setShowOfflineAlert(false);
     } else {
@@ -194,12 +181,10 @@ const ExternalApi = () => {
     }
   };
 
-  // Filter data based on search term and category
   useEffect(() => {
     if (data.length > 0) {
       let results = [...data];
       
-      // Filter by search term
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
         results = results.filter(item => 
@@ -208,7 +193,6 @@ const ExternalApi = () => {
         );
       }
       
-      // Filter by category
       if (selectedCategory !== 'all') {
         results = results.filter(item => item.category === selectedCategory);
       }
@@ -217,7 +201,6 @@ const ExternalApi = () => {
     }
   }, [searchTerm, selectedCategory, data]);
 
-  // Get unique categories for filter
   const categories = data.length > 0 
     ? ['all', ...new Set(data.map(item => item.category))].sort() 
     : ['all'];

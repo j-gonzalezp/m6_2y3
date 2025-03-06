@@ -1,63 +1,131 @@
-Cambié supabase, por un servidor propio, esté está en http://localhost:5000
-Los queries para la base de datos estan en la carpeta database, en queries.sql
+# Sistema de Gestión Hospitalaria
 
-Para ir a la ruta protegida /admin 
-logear con
-user: admin@salvador.cl
-password: admin123
+## Configuración del Servidor
 
-Para logear como usuario normal
-user:usuario1@salvador.cl
-password: user123
+El sistema utiliza un servidor propio que corre en http://localhost:5000.
+Los queries para la base de datos están en la carpeta database, en queries.sql
 
+### Credenciales de Acceso
 
-Las dependencias a utilizar, todas instaladas a través de npm
- "dependencies": {
-    "@supabase/supabase-js": "^2.47.10",
-    "axios": "^1.7.9",
-    "bcryptjs": "^2.4.3",
-    "bootstrap": "^5.3.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "helmet": "^8.0.0",
-    "jsonwebtoken": "^9.0.2",
-    "jwt-decode": "^4.0.0",
-    "jwt-simple": "^0.5.6",
-    "pg": "^8.13.1",
-    "react": "^18.3.1",
-    "react-bootstrap": "^2.10.7",
-    "react-dom": "^18.3.1",
-    "react-helmet": "^6.1.0",
-    "react-router": "^7.0.2",
-    "react-router-dom": "^7.1.1",
-    "y": "^0.3.2"
-  },# hospital_m5_real
+Para ir a la ruta protegida /admin:
+- user: admin@salvador.cl
+- password: admin123
 
-## Progressive Web App (PWA) Features
+Para logear como usuario normal:
+- user: usuario1@salvador.cl
+- password: user123
 
-Esta aplicación ahora cuenta con funcionalidades de PWA, lo que permite instalarse como una aplicación nativa y funcionar sin conexión a internet:
+## Funcionalidades Principales
 
-### Características implementadas:
+### 1. Gestión de Usuarios
+- Registro de nuevos usuarios
+- Inicio de sesión con autenticación JWT
+- Perfiles de usuario con distintos niveles de acceso (admin/usuario)
 
-1. **Manifiesto Web**
-   - Archivo manifest.json con información esencial de la aplicación
-   - Iconos en múltiples resoluciones
-   - Configuración de pantalla completa (standalone)
-   - Colores de tema personalizados
+### 2. Módulo de Citas
+- Visualización del calendario de citas
+- Agendamiento de nuevas citas médicas
+- Cancelación y modificación de citas existentes
+- Asignación automática de doctores según especialidad
 
-2. **Service Worker**
-   - Precarga (precaching) de archivos esenciales
-   - Funcionamiento offline básico
-   - Página offline personalizada
+### 3. Equipo Médico
+- Directorio completo del equipo médico
+- Filtrado por especialidad
+- Perfiles detallados de cada doctor
+- Integración con sistema de citas
 
-3. **Estrategias de Caché**
-   - Cache-first: Para recursos estáticos (CSS, JS, SVG)
-   - Stale-While-Revalidate: Para páginas HTML y contenido dinámico
+### 4. Panel de Administración
+- Gestión integral de doctores (crear, actualizar, eliminar)
+- Monitoreo de citas programadas
+- Estadísticas y reportes
 
-Para probar la funcionalidad offline:
+## Progressive Web App (PWA)
+
+La aplicación implementa tecnologías PWA que permiten su instalación como aplicación nativa y funcionamiento sin conexión a internet:
+
+### 1. Manifiesto Web
+- Archivo manifest.json con información esencial de la aplicación
+- Iconos adaptativos en múltiples resoluciones
+- Configuración de pantalla completa (standalone)
+- Colores de tema y orientación personalizados
+- Accesos directos a funciones principales
+
+### 2. Service Worker Avanzado
+- Precarga (precaching) de archivos esenciales
+- Funcionamiento offline completo
+- Página offline personalizada con opciones de navegación
+- Gestión del ciclo de vida y actualización automática
+- Notificación de nuevas versiones disponibles
+
+### 3. Estrategias de Caché
+- **Cache-First**: Para recursos estáticos (CSS, JS, SVG)
+- **Network-First with IndexedDB Fallback**: Para recursos de API
+- **Stale-While-Revalidate**: Para páginas HTML y contenido dinámico
+
+### 4. Almacenamiento Web
+- **LocalStorage**: Almacenamiento de preferencias de usuario y páginas visitadas
+- Gestión eficiente de datos de sesión
+- Persistencia entre recargas de página
+
+### 5. IndexedDB
+- Base de datos completa en el navegador
+- Almacenamiento de citas, doctores y datos médicos
+- Sincronización automática con el servidor cuando hay conexión
+- Acceso a datos cuando se está sin conexión
+
+### 6. Acceso a Periféricos
+- Integración con cámara para captura de imágenes médicas
+- Utilización de geolocalización para servicios de emergencia
+- Cálculo de distancia y rutas al hospital
+
+### 7. Consumo de API Externa
+- Integración con API médica externa (Clinical Tables API del NIH)
+- Búsqueda y filtrado de datos médicos
+- Almacenamiento en caché para acceso offline
+- Manejo de errores y estados de carga
+
+## Prueba de Funcionalidades Offline
+
+Para probar el funcionamiento sin conexión:
 1. Carga la aplicación en el navegador
 2. Abre las herramientas de desarrollo (F12)
 3. Ve a la pestaña "Application" > "Service Workers"
 4. Marca la casilla "Offline"
-5. Recarga la página para ver el comportamiento offline
-# m6_2y3
+5. Navega por la aplicación para comprobar su funcionamiento sin conexión
+
+## Módulos de Demostración
+
+La aplicación incluye módulos específicos para demostrar las capacidades PWA:
+
+- **/storage-demo**: Demuestra el uso de LocalStorage y su persistencia
+- **/device-access**: Muestra el acceso a cámara y geolocalización
+- **/medical-api**: Exhibe la integración con API externa y almacenamiento IndexedDB
+
+## Tecnologías Utilizadas
+
+Frontend:
+- React 18
+- React Router
+- React Bootstrap
+- Service Workers
+- IndexedDB, LocalStorage
+- Fetch API
+
+Backend:
+- Node.js con Express
+- PostgreSQL
+- JWT para autenticación
+- Helmet para seguridad
+
+## Instalación y Ejecución
+
+```bash
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+
+# Iniciar servidor backend
+node server.js
+```

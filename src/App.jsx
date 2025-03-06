@@ -15,7 +15,7 @@ import ExternalApi from './components/ExternalApi';
 
 function App() {
   const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('role'); // Asumimos que el rol está guardado en el localStorage
+  const userRole = localStorage.getItem('role');
 
   return (
     <HospitalContextProvider>
@@ -27,21 +27,17 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           
-          {/* Ruta protegida para Admin */}
           <Route 
             path="/admin" 
             element={token && userRole === 'admin' ? <Admin /> : <Navigate to="/login" />} 
           />
 
-          {/* Otras rutas */}
           <Route path="/appointments" element={<Appointments />} />
           
-          {/* Rutas para PWA */}
           <Route path="/storage-demo" element={<StorageDemo />} />
           <Route path="/device-access" element={<DeviceAccess />} />
           <Route path="/medical-api" element={<ExternalApi />} />
           
-          {/* Ruta no encontrada */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

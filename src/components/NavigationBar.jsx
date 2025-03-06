@@ -14,12 +14,10 @@ function NavigationBar() {
       setIsLoggedIn(true);
     }
     
-    // Check and update online status
     const handleOnlineStatus = () => setIsOnline(navigator.onLine);
     window.addEventListener('online', handleOnlineStatus);
     window.addEventListener('offline', handleOnlineStatus);
     
-    // Listen for service worker updates
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         setShowUpdateAlert(true);
